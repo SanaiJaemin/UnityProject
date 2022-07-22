@@ -7,7 +7,7 @@ public class PlayerInput : MonoBehaviour
   
     public float MoveDirection { get; private set; }
     public float Rotate { get; private set; }
-
+    
     
     // Start is called before the first frame update
     void Start()
@@ -18,8 +18,8 @@ public class PlayerInput : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        MoveDirection = Input.GetAxis("Vertical");
-        Rotate = Input.GetAxis("Horizontal");
+        MoveDirection = Input.GetAxis("Vertical"); //키입력
+        Rotate = Input.GetAxis("Horizontal"); //키입력
         
     }
 }

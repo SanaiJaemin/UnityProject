@@ -11,9 +11,12 @@ public class PlayerMove : MonoBehaviour
     private PlayerInput _input;
     private Rigidbody _rigidbody;
     private Animator _animator;
+    private bool isMove = false;
     private static class AnimID
     {
-        public static readonly int MOVE = Animator.StringToHash("Momve");
+        public static readonly int MOVE = Animator.StringToHash("Move");
+        public static readonly int Die = Animator.StringToHash("Die");
+
     }
     // Start is called before the first frame update
     void Start()
@@ -28,10 +31,17 @@ public class PlayerMove : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
+       
+        
         move();
+        
+
+        
+
+      
         rotate();
         // 물리 갱신 주기마다 움직임, 회전, 애니메이션 처리 실행
-        _animator.SetFloat(AnimID.MOVE, _input.MoveDirection);
+        
     }
 
     // 입력값에 따라 캐릭터를 앞뒤로 움직임
