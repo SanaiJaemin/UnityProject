@@ -819,7 +819,7 @@ ModelImporter:
       name: WTD_Stand@loop
       takeName: Take 001
       internalID: 7400000
-      firstFrame: 70
+      firstFrame: 100
       lastFrame: 110
       wrapMode: 0
       orientationOffsetY: 0

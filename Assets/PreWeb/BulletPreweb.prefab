@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 5477086696444491483}
   - component: {fileID: 2251250331362822690}
   - component: {fileID: 2586916644008224194}
+  - component: {fileID: 1980225200934670729}
   m_Layer: 0
   m_Name: BulletPreweb
   m_TagString: Untagged
@@ -99,3 +100,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bulletSpeed: 0.1
+--- !u!135 &1980225200934670729
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 505206021213306622}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.3254414
+  m_Center: {x: 0.07038726, y: -0.00000018812722, z: 0.12734258}

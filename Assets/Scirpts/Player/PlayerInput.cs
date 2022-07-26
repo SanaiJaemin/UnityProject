@@ -43,6 +43,7 @@ public class PlayerInput : MonoBehaviour
         Movevec = new Vector3(X, 0f, Z).normalized;
 
         transform.position += Movevec * speed * Time.deltaTime;
+        
         _animator.SetBool("IsRun", Movevec != Vector3.zero);
 
         transform.LookAt(transform.position + Movevec);
