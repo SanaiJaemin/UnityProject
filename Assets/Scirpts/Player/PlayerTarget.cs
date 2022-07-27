@@ -6,17 +6,18 @@ public class PlayerTarget : MonoBehaviour
 {
     public GameObject bulletPreweb; //ÃÑ¾Ë
     public GameObject Target;
+    private int monsterCount;
     public float bulletCoolTime; 
     
     private Animator _animator;
-    private float fullTime = 0f;
-    private float bulletDeleteTime;
+    private float fullTime = 0.5f;
     private bool targetConfirmation = false;
     private bool isRun = false;
 
 
      void Awake()
     {
+        
         _animator = GetComponent<Animator>();
     }
      void Update()
@@ -36,12 +37,19 @@ public class PlayerTarget : MonoBehaviour
         {
             if (targetConfirmation)
             {
+                if(Target != null)
                 transform.LookAt(Target.transform.position);
                 bulletShot();
             }
             else
+            {
+
+                Target = null;
+            
                 bulletShot();
             
+            }
+           
         }
 
     }
@@ -61,19 +69,25 @@ public class PlayerTarget : MonoBehaviour
     {
         if (other.tag == "Monster")
         {
-
-
+            Debug.Log($"¸ó½ºÅÍ¸¦ ¸¸³µ½À´Ï´Ù.");
             Target = other.gameObject;
             Debug.DrawRay(transform.position, other.transform.position - transform.position, Color.red); //·»´õ¸µ
             targetConfirmation = true;
         }
+        
+       
     }
 
-    //private void OnTriggerExit(Collider other)
-    //{
-    //    Target = null;
-    //    targetConfirmation = false;
-    //}
+    private void OnTriggerExit(Collider other)
+    {
+        targetConfirmation = false;
+    }
+
+
+
+
+
+
 
 
 }

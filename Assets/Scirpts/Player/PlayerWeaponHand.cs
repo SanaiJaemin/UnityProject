@@ -10,11 +10,7 @@ public class PlayerWeaponHand : MonoBehaviour
     private PlayerInput _input;
     private Animator _animator;
 
-    private static class AnimID
-    {
-        public static readonly int Attack = Animator.StringToHash("Attack");
-
-    }
+   
 
     // Start is called before the first frame update
     void Awake()
