@@ -4,27 +4,63 @@ using UnityEngine;
 
 public class Ground : MonoBehaviour
 {
-    public bool playerIs = false;
-    public List<GameObject> MonsterCount = new List<GameObject>();
-    public static Ground Instance;
+    public List<GameObject> MonsterListInRoom = new List<GameObject> ( );
+    PlayerTarget _playerTarget;
+    
+    public bool playerInThisRoom = false;
+    public bool isClearRoom = false;
 
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.gameObject.tag =="Monster")
-        {
-            MonsterCount.Add(other.gameObject);
-        }
-    }
-
+    GameObject Nextgate;
+    
     // Start is called before the first frame update
-    void Start()
+    void Start ( )
     {
         
     }
 
     // Update is called once per frame
-    void Update()
+    void Update ( )
     {
-        
+        if ( playerInThisRoom )
+        {
+            if ( PlayerTarget.Instance.MonsterList.Count <= 0 && !isClearRoom )
+            {
+                isClearRoom = true;
+                Debug.Log ( " Clear " );
+            }
+        }
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Monster"))
+        {
+            MonsterListInRoom.Add(other.gameObject); // 변경
+            Debug.Log(" Mob name : " + other.gameObject); // 변경
+        }
+        if (other.CompareTag("Player"))
+        {
+            //플레이어가 방에 들어오면 이방의 몹리스트를 링크(복사)시킨다.
+            playerInThisRoom = true;
+            PlayerTarget.Instance.MonsterList = new List<GameObject>(MonsterListInRoom);
+            Debug.Log("Enter New Room! Mob Count : " + PlayerTarget.Instance.MonsterList.Count);
+
+      
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            playerInThisRoom = false;
+            
+            Debug.Log("Player Exit!");
+        }
+        if (other.CompareTag("Monster"))
+        {
+            MonsterListInRoom.Remove(other.gameObject);  // 변경
+        }
+    }
+
+
 }

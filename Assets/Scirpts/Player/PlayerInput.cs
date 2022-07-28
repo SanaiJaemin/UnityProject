@@ -7,11 +7,9 @@ public class PlayerInput : MonoBehaviour
 
     public float X { get; private set; }
     public float Z { get; private set; }
-    public float speed;
-
-
+ 
+   
     private Animator _animator;
-    private Vector3 Movevec;
     private Rigidbody _rigidbody;
     private void Awake()
     {

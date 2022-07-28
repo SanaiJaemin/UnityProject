@@ -2,8 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTarget : MonoBehaviour
+public class PlayerTarget : SingletonBehaviour<PlayerTarget>
 {
+   
+    private static PlayerTarget instance;
     public GameObject bulletPreweb; //ÃÑ¾Ë
     public GameObject Target;
     private int monsterCount;
@@ -14,14 +16,18 @@ public class PlayerTarget : MonoBehaviour
     private bool targetConfirmation = false;
     private bool isRun = false;
 
+    public List<GameObject> MonsterList = new List<GameObject>();
+
 
      void Awake()
     {
         
         _animator = GetComponent<Animator>();
     }
+
      void Update()
     {
+        _animator.CrossFade("Attack",bulletCoolTime);
 
 
         if (_animator.GetBool("IsRun")) //  ·±ÀÌ ¾Æ´Ò¶§¸¸ ¹ß½Î

@@ -6,7 +6,7 @@ public class SingletonBehaviour<T> : MonoBehaviour where T : MonoBehaviour
 {
     private static T _instance;
 
-    private static T Instance
+    public static T Instance
     {
         get
         {

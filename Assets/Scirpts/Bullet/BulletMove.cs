@@ -19,5 +19,11 @@ public class BulletMove : MonoBehaviour
     {
         transform.Translate(0f, 0f, bulletSpeed*Time.deltaTime);
     }
-
+    private void OnTriggerEnter(Collider other)
+    {
+        if(other.tag == "Wall")
+        {
+            Destroy(gameObject);
+        }
+    }
 }
