@@ -2,95 +2,96 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTarget : SingletonBehaviour<PlayerTarget>
+public class PlayerTarget : MonoBehaviour
 {
-   
-    private static PlayerTarget instance;
-    public GameObject bulletPreweb; //총알
-    public GameObject Target;
-    private int monsterCount;
-    public float bulletCoolTime; 
-    
-    private Animator _animator;
-    private float fullTime = 0.5f;
-    private bool targetConfirmation = false;
-    private bool isRun = false;
+
+
+    public bool getATarget = false;
+    float currentDist = 0;      //현재 거리
+    float closetDist = 100f;    //가까운 거리
+    float TargetDist = 100f;   //타겟 거리
+    int closeDistIndex = 0;    //가장 가까운 인덱스
+    public int TargetIndex = -1;      //타겟팅 할 인덱스
+    int prevTargetIndex = 0;
+    public LayerMask layerMask;
+    public float totalTime = 0f;
+    public int monsterCount;
+
+    public float atkSpd = 1f;
 
     public List<GameObject> MonsterList = new List<GameObject>();
+    //Monster를 담는 List 
 
+    public GameObject PlayerBolt;  //발사체
+    public Transform AttackPoint;
+    private Animator _animator;
 
-     void Awake()
+    private void Awake()
     {
-        
         _animator = GetComponent<Animator>();
+        
     }
 
-     void Update()
+    private void Start()
     {
-        _animator.CrossFade("Attack",bulletCoolTime);
+        _animator.CrossFade("Attack", atkSpd);
 
+    }
+    // Update is called once per frame
+    void Update()
+    {
 
-        if (_animator.GetBool("IsRun")) //  런이 아닐때만 발싸
+        Attack();
+    }
+
+    void Attack()
+    {
+        if (!_animator.GetBool("IsRun"))
         {
-            isRun = true;
-
-        }
-        else
-            isRun = false;
-         
-       
-       if(isRun == false)
-        {
-            if (targetConfirmation)
+            if (getATarget)
             {
-                if(Target != null)
-                transform.LookAt(Target.transform.position);
-                bulletShot();
+                attackSpeed();
+                transform.LookAt(AttackPoint.position);
             }
             else
             {
-
-                Target = null;
-            
-                bulletShot();
-            
+                attackSpeed();
             }
-           
+
         }
 
     }
-
-    void bulletShot() //발사
+    void attackSpeed()
     {
-        fullTime += Time.deltaTime;
-        if (fullTime > bulletCoolTime)
+        totalTime += Time.deltaTime;
+
+        if (totalTime > atkSpd)
         {
-            fullTime = 0f;
-            GameObject bullet = Instantiate(bulletPreweb, transform.position, transform.rotation);
+            totalTime = 0f;
+            Instantiate(PlayerBolt, AttackPoint.position, transform.rotation);
+        }
+
+    }
+    void OnTriggerEnter(Collider other)
+    {
+       
+        if (other.CompareTag("Monster"))
+        {
+            MonsterList.Add(other.gameObject); // 변경
+            Debug.Log("몹 카운터 : " + monsterCount);
+            getATarget = true;
             
         }
     }
 
-    private void OnTriggerStay(Collider other) //몬스터 발견시 타켓지정
-    {
-        if (other.tag == "Monster")
-        {
-            Debug.Log($"몬스터를 만났습니다.");
-            Target = other.gameObject;
-            Debug.DrawRay(transform.position, other.transform.position - transform.position, Color.red); //렌더링
-            targetConfirmation = true;
-        }
-        
-       
-    }
+
 
     private void OnTriggerExit(Collider other)
     {
-        targetConfirmation = false;
+
+        getATarget = false;
+
     }
-
-
-
 
 
 
