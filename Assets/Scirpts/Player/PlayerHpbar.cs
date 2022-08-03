@@ -1,62 +1,36 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class PlayerHpBar : MonoBehaviour
 {
-    public static PlayerHpBar Instance // singlton     
-    {
-        get
-        {
-            if (instance == null)
-            {
-                instance = FindObjectOfType<PlayerHpBar>();
-                if (instance == null)
-                {
-                    var instanceContainer = new GameObject("PlayerHpBar");
-                    instance = instanceContainer.AddComponent<PlayerHpBar>();
-                }
-            }
-            return instance;
-        }
-    }
-    private static PlayerHpBar instance;
+    // Start is called before the first frame update
 
-    public Transform player;
-    public Slider hpBar;
-    public float maxHp;
+    public Transform Player;
+    public Slider HpBar;
+    public float Maxhp;
     public float currentHp;
-
-    public GameObject HpLineFolder;
-
-    public Text playerHpText;
+    public GameObject HpBarLine;
     float unitHp = 200f;
 
-    // Start is called before the first frame update
+     void Awake()
+    {
+           
+    }
     void Start()
     {
-
+        
     }
+
+
 
     // Update is called once per frame
     void Update()
     {
-        transform.position = player.position;
-        hpBar.value = currentHp / maxHp;
-        playerHpText.text = "" + currentHp;
+        transform.position = new Vector3(Player.position.x, 1.5f, Player.position.z);
+        HpBar.value = currentHp / Maxhp;
+
     }
 
-    public void GetHpBoost()
-    {
-        maxHp += 150;
-        currentHp += 150;
-        float scaleX = (1000f / unitHp) / (maxHp / unitHp);
-        HpLineFolder.GetComponent<HorizontalLayoutGroup>().gameObject.SetActive(false);
-
-        foreach (Transform child in HpLineFolder.transform)
-        {
-            child.gameObject.transform.localScale = new Vector3(scaleX, 1, 1);
-        }
-
-        HpLineFolder.GetComponent<HorizontalLayoutGroup>().gameObject.SetActive(true);
-    }
+ 
 }

@@ -14,18 +14,20 @@ public class EnemyBase : MonoBehaviour
     protected float attackCoolTime = 5f;
     protected float attackCoolTimeCacl = 5f;
     protected bool isPlayer = true;
+    protected bool canAttack = true;
+
 
     protected float moveSpeed = 2f;
 
     protected GameObject Player;
-    protected NavMeshAgent nvAgent;
+    protected NavMeshAgent _nvAgent;
     protected float distance;
     PlayerTarget _playerTarget;
 
     protected GameObject parentRoom;
-
-    protected Animator Anim;
+    protected Animator _animator;
     protected Rigidbody rb;
+    EnemyHpBar _enemyHpBar;
 
     public LayerMask layerMask;
 
@@ -34,33 +36,26 @@ public class EnemyBase : MonoBehaviour
     {
         Player = GameObject.FindGameObjectWithTag("Player");
 
-        nvAgent = GetComponent<NavMeshAgent>();
+        _nvAgent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
-        Anim = GetComponent<Animator>();
+        _animator = GetComponent<Animator>();
 
 
 
-        StartCoroutine(updatePath());
+       
     }
 
-    
-    private IEnumerator updatePath()
-    {
-        while (true)
-        {
-            nvAgent.SetDestination(Player.transform.position);
 
-            yield return new WaitForSeconds(0.25f);
-
-        }
-
-    }
+ 
+  
     protected bool CanAtkStateFun()
     {
-        Vector3 targetDir = new Vector3(Player.transform.position.x - transform.position.x, 0f, Player.transform.position.z - transform.position.z);
+        RaycastHit hit;
+        Vector3 targetDir = new Vector3(Player.transform.position.x - transform.position.x, 0f, Player.transform.position.z - transform.position.z); //방향
 
-        Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out RaycastHit hit, 30f, layerMask);
-        distance = Vector3.Distance(Player.transform.position, transform.position);
+        Physics.Raycast(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir, out  hit, 30f);
+        distance = Vector3.Distance(Player.transform.position, transform.position); //거리
+        Debug.DrawRay(new Vector3(transform.position.x, 0.5f, transform.position.z), targetDir * 30f, Color.green);
 
         if (hit.transform == null)
         {
@@ -78,12 +73,23 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    private void OnTriggerStay(Collider other)
+    protected virtual IEnumerator CalcCoolTime()
     {
-        if(other.CompareTag("Bullet"))
+        while (true)
         {
-            
-            
+            yield return null;
+            //공격이 시작됬다면 쿨타임 계산 시작
+            if (!canAttack)
+            {
+                //Time.deltaTime만큼 attackCoolTimeCacl계산
+                attackCoolTimeCacl -= Time.deltaTime;
+                //attackCoolTimeCacl이 0에 근접하면 attackCoolTime값으로 초기화
+                if (attackCoolTimeCacl <= 0)
+                {
+                    attackCoolTimeCacl = attackCoolTime;
+                    canAttack = true; //공격이 다시 가능함
+                }
+            }
         }
     }
 }

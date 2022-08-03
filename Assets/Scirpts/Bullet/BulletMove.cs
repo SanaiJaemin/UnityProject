@@ -5,25 +5,35 @@ using UnityEngine;
 public class BulletMove : MonoBehaviour
 {
 
-    public float bulletSpeed = 10f;
-
-
-    // Start is called before the first frame update
     void Start()
     {
-        Destroy(gameObject, 5f);
+        GetComponent<Rigidbody>().velocity = transform.forward * 20f;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.CompareTag("Wall") || other.transform.CompareTag("Monster"))
+        {
+            //벽또는 몬스터에 닿았을때
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Destroy(gameObject, 0.2f);
+        }
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.transform.CompareTag("Wall") || collision.transform.CompareTag("Monster"))
+        {
+            //벽또는 몬스터에 닿았을때
+            GetComponent<Rigidbody>().velocity = Vector3.zero;
+            Destroy(gameObject, 0.2f);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(0f, 0f, bulletSpeed*Time.deltaTime);
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if(other.tag == "Wall")
-        {
-            Destroy(gameObject);
-        }
+
     }
 }
+

@@ -2,99 +2,141 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerTarget : MonoBehaviour
+public class PlayerTarget : SingletonBehaviour<PlayerTarget>
 {
 
-
-    public bool getATarget = false;
-    float currentDist = 0;      //현재 거리
-    float closetDist = 100f;    //가까운 거리
-    float TargetDist = 100f;   //타겟 거리
-    int closeDistIndex = 0;    //가장 가까운 인덱스
-    public int TargetIndex = -1;      //타겟팅 할 인덱스
-    int prevTargetIndex = 0;
-    public LayerMask layerMask;
-    public float totalTime = 0f;
-    public int monsterCount;
+    public bool getTarget = false;
+    float currentDist = 0;
+    float closetDist = 100;
+    float TargetDist = 100f;
+    int closeDistIndex = 0; // 가까운적 인덱스
+   public  int TargetIndex = -1;  // 타겟중일때 인덱스
+    int prevIndex = 0; // 이전에 적의 인덱스
+    float Totaltime;
 
     public float atkSpd = 1f;
 
     public List<GameObject> MonsterList = new List<GameObject>();
-    //Monster를 담는 List 
 
-    public GameObject PlayerBolt;  //발사체
-    public Transform AttackPoint;
+    public GameObject bulletPrefeb;
+    public Transform firePosition;
     private Animator _animator;
 
     private void Awake()
     {
         _animator = GetComponent<Animator>();
+       
         
     }
 
     private void Start()
     {
-        _animator.CrossFade("Attack", atkSpd);
-
-    }
-    // Update is called once per frame
-    void Update()
-    {
-
-        Attack();
+        _animator.CrossFade("attack", atkSpd);
     }
 
-    void Attack()
+
+
+    private void Update()
     {
-        if (!_animator.GetBool("IsRun"))
+        setTarget();
+        atkTarget();
+    }
+
+   void Attack()
+    {
+        
+        Totaltime += Time.deltaTime;
+        if(Totaltime > atkSpd)
         {
-            if (getATarget)
+            Totaltime = 0f;
+            Instantiate(bulletPrefeb, firePosition.position, transform.rotation);
+        }
+            
+    }
+
+    
+    void setTarget()
+    {
+        if (MonsterList.Count != 0)
+        {
+            
+            prevIndex = TargetIndex;
+            currentDist = 0f;
+            closeDistIndex = 0;
+            TargetIndex = -1;
+            for (int i = 0; i < MonsterList.Count; i++)
             {
-                attackSpeed();
-                transform.LookAt(AttackPoint.position);
+                if (MonsterList[i] == null)
+                {
+                    return;
+                }
+                currentDist = Vector3.Distance(transform.position, MonsterList[i].transform.position);
+                RaycastHit hit;
+                bool isHit = Physics.Raycast(transform.position, MonsterList[i].transform.position - transform.position, out hit, 20f);
+                
+                if (isHit && hit.transform.CompareTag("Monster"))
+                {
+                    if(TargetDist >= currentDist)
+                    {
+                        TargetIndex = i;
+
+                        TargetDist = currentDist;
+                        if(!_animator.GetBool("IsRun") && prevIndex != TargetIndex)
+                        {
+                            TargetIndex = prevIndex;
+                        }
+                    }
+
+                }
+                 
+                if (closetDist >= currentDist)
+                {
+                    closeDistIndex = i;
+                    closetDist = currentDist;
+                    
+
+                }
+            
+            }
+
+            if(TargetIndex == -1)
+            {
+                TargetIndex = closeDistIndex;
+                
+            }
+
+            closetDist = 100f;
+            TargetDist = 100f;
+            getTarget = true;
+
+        }
+    }
+    void atkTarget()
+    {
+        
+        if(!_animator.GetBool("IsRun"))
+            
+        {
+
+            if (getTarget && MonsterList.Count != 0)
+            {
+                transform.LookAt(new Vector3(MonsterList[TargetIndex].transform.position.x, transform.position.y, MonsterList[TargetIndex].transform.position.z));
+                Attack();
+
             }
             else
-            {
-                attackSpeed();
-            }
-
+                Attack();
+        
         }
 
-    }
-    void attackSpeed()
-    {
-        totalTime += Time.deltaTime;
-
-        if (totalTime > atkSpd)
-        {
-            totalTime = 0f;
-            Instantiate(PlayerBolt, AttackPoint.position, transform.rotation);
-        }
-
-    }
-    void OnTriggerEnter(Collider other)
-    {
        
-        if (other.CompareTag("Monster"))
-        {
-            MonsterList.Add(other.gameObject); // 변경
-            Debug.Log("몹 카운터 : " + monsterCount);
-            getATarget = true;
-            
-        }
     }
-
-
-
-    private void OnTriggerExit(Collider other)
-    {
-
-        getATarget = false;
-
-    }
-
-
-
-
-
 }
+
+  
+
+
+
+
+
+
