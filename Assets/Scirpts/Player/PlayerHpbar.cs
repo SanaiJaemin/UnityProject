@@ -34,7 +34,7 @@ public class PlayerHpbar : MonoBehaviour
     {
         transform.position = new Vector3(Player.position.x, 1.5f, Player.position.z);
         HpBar.value = currentHp / Maxhp;
-        ExpBar.value = currentExp / MaxExp;
+      
       
 
         

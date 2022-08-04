@@ -22,7 +22,16 @@ public class EnemyHpBar : MonoBehaviour
     {
         transform.position = new Vector3(Enemy.position.x, 3f, Enemy.position.z);
         HpBar.value = Mathf.Lerp(HpBar.value, currentHp / maxHp, Time.deltaTime); //선형보간함수 이쁘게 보임
-
+        if (HpBar == null)
+        {
+            return;
+        
+        }
+        if(HpBar.value == 0)
+        {
+            HpBar.gameObject.SetActive(false);
+        }
+       
     }
 
     

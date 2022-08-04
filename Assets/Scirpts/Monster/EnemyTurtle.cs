@@ -52,30 +52,22 @@ public class EnemyTurtle : EnemyFSM
 
     void Update()
     {
-        if(_animator.GetBool("true"))
-        {
-
-        }
+        
         //Enemy가 죽으면
         if (currentHp <= 0)
         {
             _animator.SetBool("Die",true);
-
             _rigidbody.isKinematic = true; //충돌판정 삭제
-            transform.position = Player.transform.forward;
             Debug.Log("죽음");
             _nvAgent.isStopped = true; //네비매쉬 정지
             PlayerTarget.Instance.MonsterList.Remove(transform.parent.gameObject); //플레이어가 인식한 Enemy리스트에서 해당오브젝트 삭제
-            PlayerTarget.Instance.TargetIndex = -1; //플레이어의 타겟을 초기화시켜서 다른 타겟을 찾게함
-            
+            PlayerTarget.Instance.TargetIndex = -1; //플레이어의 타겟을 초기화시켜서 다른 타겟을 찾게함          
            
         }
     }
-
     public void Distroy()
     {
-        Destroy(transform.parent.gameObject); //해당 오브젝트 삭제
-         
+        Destroy(transform.parent.gameObject); //해당 오브젝트 삭제   
     }
 
     IEnumerator AttackColor()
@@ -91,6 +83,7 @@ public class EnemyTurtle : EnemyFSM
         if (other.CompareTag("Player"))
         {
             _animator.SetBool("Attak", true);
+
         }
 
         if (other.CompareTag("Bullet"))
@@ -99,6 +92,14 @@ public class EnemyTurtle : EnemyFSM
             enemyCanvasGo.GetComponent<EnemyHpBar>().currentHp -= 100;
             currentHp = enemyCanvasGo.GetComponent<EnemyHpBar>().currentHp;
             Debug.Log("체력 :" + currentHp);
+        }
+    }
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+        {
+            _animator.SetBool("Attak", false);
+
         }
     }
 

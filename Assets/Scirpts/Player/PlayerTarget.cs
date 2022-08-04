@@ -31,7 +31,7 @@ public class PlayerTarget : SingletonBehaviour<PlayerTarget>
 
     private void Start()
     {
-        _animator.CrossFade("attack", atkSpd);
+        _animator.CrossFade("Attack", atkSpd);
     }
 
 
@@ -108,7 +108,7 @@ public class PlayerTarget : SingletonBehaviour<PlayerTarget>
             closetDist = 100f;
             TargetDist = 100f;
             getTarget = true;
-
+            Debug.Log("1");
         }
     }
     void atkTarget()
@@ -118,8 +118,7 @@ public class PlayerTarget : SingletonBehaviour<PlayerTarget>
         {
 
             if (MonsterList.Count == 0 || TargetIndex == -1)
-            {
-                Attack();
+            { 
                 return;
             }
 
@@ -131,11 +130,7 @@ public class PlayerTarget : SingletonBehaviour<PlayerTarget>
                 Attack();
 
             }
-            else
-            {
-
-            Attack();
-            }
+           
            
         
         }
