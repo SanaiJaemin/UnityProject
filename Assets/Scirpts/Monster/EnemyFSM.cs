@@ -88,7 +88,7 @@ public class EnemyFSM : EnemyBase
         {
             _animator.SetTrigger("Attack");
         }
-        AtkEffect();
+      
         yield return Delay500;
 
         _nvAgent.speed = moveSpeed;

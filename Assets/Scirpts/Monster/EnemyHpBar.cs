@@ -9,10 +9,6 @@ public class EnemyHpBar : MonoBehaviour
     public float currentHp = 1000f;
     public float maxHp = 1000f;
 
-  
-    
-
-
     private void Awake()
     {
         

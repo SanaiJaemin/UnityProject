@@ -16,7 +16,7 @@ public class BulletMove : MonoBehaviour
         {
             //벽또는 몬스터에 닿았을때
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Destroy(gameObject, 0.2f);
+            Destroy(gameObject);
         }
     }
 
@@ -26,7 +26,7 @@ public class BulletMove : MonoBehaviour
         {
             //벽또는 몬스터에 닿았을때
             GetComponent<Rigidbody>().velocity = Vector3.zero;
-            Destroy(gameObject, 0.2f);
+            Destroy(gameObject);
         }
     }
 

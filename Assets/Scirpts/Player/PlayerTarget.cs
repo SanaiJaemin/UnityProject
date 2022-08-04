@@ -6,11 +6,11 @@ public class PlayerTarget : SingletonBehaviour<PlayerTarget>
 {
 
     public bool getTarget = false;
-    float currentDist = 0;
-    float closetDist = 100;
+    float currentDist = 0f;
+    float closetDist = 100f;
     float TargetDist = 100f;
     int closeDistIndex = 0; // 가까운적 인덱스
-   public  int TargetIndex = -1;  // 타겟중일때 인덱스
+    public int TargetIndex = -1;  // 타겟중일때 인덱스
     int prevIndex = 0; // 이전에 적의 인덱스
     float Totaltime;
 
@@ -114,18 +114,29 @@ public class PlayerTarget : SingletonBehaviour<PlayerTarget>
     void atkTarget()
     {
         
-        if(!_animator.GetBool("IsRun"))
-            
+        if(!_animator.GetBool("IsRun"))  
         {
+
+            if (MonsterList.Count == 0 || TargetIndex == -1)
+            {
+                Attack();
+                return;
+            }
+
 
             if (getTarget && MonsterList.Count != 0)
             {
+
                 transform.LookAt(new Vector3(MonsterList[TargetIndex].transform.position.x, transform.position.y, MonsterList[TargetIndex].transform.position.z));
                 Attack();
 
             }
             else
-                Attack();
+            {
+
+            Attack();
+            }
+           
         
         }
 

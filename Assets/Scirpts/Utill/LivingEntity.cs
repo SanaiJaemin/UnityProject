@@ -6,6 +6,8 @@ using UnityEngine;
 
 public class LivingEntity: MonoBehaviour ,IDamageable
 {
+
+    public GameObject PlayerExp;
     public float startingHealth = 100f; // 시작 체력
     public float CurrentHealth { get; protected set; } // 현재 체력
     public bool IsDead { get; protected set; } // 사망 상태

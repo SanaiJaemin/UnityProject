@@ -5,7 +5,7 @@ using UnityEngine;
 public class EnemyControll : MonoBehaviour
 {
 
-
+    
     public GameObject EnemyCanvas;
    
     // Start is called before the first frame update
@@ -24,8 +24,6 @@ public class EnemyControll : MonoBehaviour
     {
         if(other.CompareTag("Bullet"))
         {
-            EnemyCanvas.GetComponent<EnemyHpBar>().currentHp -= 300f;
-            
             
         }
 

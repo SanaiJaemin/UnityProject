@@ -16,17 +16,19 @@ public class EnemyBase : MonoBehaviour
     protected bool isPlayer = true;
     protected bool canAttack = true;
 
-
+    
+    
     protected float moveSpeed = 2f;
 
-    protected GameObject Player;
+    public GameObject Player;
     protected NavMeshAgent _nvAgent;
     protected float distance;
     PlayerTarget _playerTarget;
 
+    protected GameObject _enemyCanvas;
     protected GameObject parentRoom;
     protected Animator _animator;
-    protected Rigidbody rb;
+    protected Rigidbody _rigidbody;
     EnemyHpBar _enemyHpBar;
 
     public LayerMask layerMask;
@@ -37,7 +39,7 @@ public class EnemyBase : MonoBehaviour
         Player = GameObject.FindGameObjectWithTag("Player");
 
         _nvAgent = GetComponent<NavMeshAgent>();
-        rb = GetComponent<Rigidbody>();
+        _rigidbody = GetComponent<Rigidbody>();
         _animator = GetComponent<Animator>();
 
 
@@ -45,8 +47,6 @@ public class EnemyBase : MonoBehaviour
        
     }
 
-
- 
   
     protected bool CanAtkStateFun()
     {
@@ -92,4 +92,5 @@ public class EnemyBase : MonoBehaviour
             }
         }
     }
+    
 }
